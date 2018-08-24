@@ -116,11 +116,19 @@ FROM build_dependencies AS build
 ARG checkout_branch=master
 ARG configure_options
 
+RUN set -ex; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends wget
+
 WORKDIR /usr/src/couchdb/
 RUN git fetch origin \
     && git checkout $checkout_branch \
     && ./configure $configure_options \
-    && make release
+    && mv bin/rebar bin/rebar-orig \
+    && wget https://github.com/rebar/rebar/wiki/rebar -O bin/rebar \
+    && chmod +x bin/rebar \
+    && make release \
+    && apt-get purge -y --auto-remove wget
 
 # This results in a single layer image (or at least skips the build stuff?)
 FROM runtime
