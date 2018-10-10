@@ -39,7 +39,7 @@ RUN apt-get update -y && apt-get install -y \
         gpg --keyserver $server --recv-keys 8756C4F765C9AC3CB6B85D62379CE192D401AB61 && break || : ; \
         done \
     && gpg -a --export 8756C4F765C9AC3CB6B85D62379CE192D401AB61 > /etc/apt/trusted.gpg.d/couchdb.gpg.asc \
-    && apt-get update -y && apt-get install -y --no-install-recommends couch-libmozjs185-1.0 \
+    && apt-get update -y && apt-get install -y --no-install-recommends libmozjs185-1.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # grab gosu for easy step-down from root and tini for signal handling
@@ -88,7 +88,7 @@ FROM runtime AS build_dependencies
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     build-essential \
-    couch-libmozjs185-dev \
+    libmozjs185-dev \
     erlang-nox \
     erlang-reltool \
     erlang-dev \
